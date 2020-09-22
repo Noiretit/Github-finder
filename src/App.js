@@ -36,13 +36,15 @@ class App extends Component {
   clearUsers = () => this.componentDidMount();
 
   render() {
+
+    const {searched, loading, users} = this.state;
   
     return (
       <div className="App">
         <Navbar title="Github Finder" icon="fab fa-github"/>
         <div className='container'>
-          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} searched={this.state.searched} />
-          <User loading={this.state.loading} users={this.state.users}/>
+          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} searched={searched} />
+          <User loading={loading} users={users}/>
         </div>
       </div>
     );

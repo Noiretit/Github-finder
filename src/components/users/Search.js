@@ -24,10 +24,12 @@ class Search extends Component {
         e.preventDefault();
         this.props.searchUsers(this.state.text);
         this.setState({ text: '' });
-        console.log(this.props)
     }
 
     render() {
+
+        const { searched, clearUsers } = this.props;
+
         return (
             <div>
                 <form className='form' onSubmit={this.onSubmit}>
@@ -35,8 +37,8 @@ class Search extends Component {
                     <input type='submit' value='Search' className='btn btn-dark btn-block' />
                 </form>
 
-                {this.props.searched && 
-                    <button className="btn btn-light btn-block" onClick={this.props.clearUsers}>Clear</button>}
+                {searched && 
+                    <button className="btn btn-light btn-block" onClick={clearUsers}>Clear</button>}
                 
             </div>
         )
