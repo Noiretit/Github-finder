@@ -9,7 +9,8 @@ class Search extends Component {
     };
 
     static propTypes = {
-        searchUsers: PropTypes.func.isRequired
+        searchUsers: PropTypes.func.isRequired,
+        clearUsers: PropTypes.func.isRequired
     }
 
     //It can also be more dinamically for only one input:
@@ -23,6 +24,7 @@ class Search extends Component {
         e.preventDefault();
         this.props.searchUsers(this.state.text);
         this.setState({ text: '' });
+        console.log(this.props)
     }
 
     render() {
@@ -30,8 +32,12 @@ class Search extends Component {
             <div>
                 <form className='form' onSubmit={this.onSubmit}>
                     <input type='text' name='text' placeholder='Search a user...' value={this.state.value} onChange={this.onChange}/>
-                    <input type='submit' value='search' className='btn btn-dark btn-block' />
+                    <input type='submit' value='Search' className='btn btn-dark btn-block' />
                 </form>
+
+                {this.props.searched && 
+                    <button className="btn btn-light btn-block" onClick={this.props.clearUsers}>Clear</button>}
+                
             </div>
         )
     }
