@@ -10,7 +10,8 @@ class Search extends Component {
 
     static propTypes = {
         searchUsers: PropTypes.func.isRequired,
-        clearUsers: PropTypes.func.isRequired
+        clearUsers: PropTypes.func.isRequired,
+        setAlert: PropTypes.func.isRequired,
     }
 
     //It can also be more dinamically for only one input:
@@ -22,8 +23,12 @@ class Search extends Component {
     //The functions resides in App.js, where it is passed as props to this actual component
     onSubmit = e => {
         e.preventDefault();
-        this.props.searchUsers(this.state.text);
-        this.setState({ text: '' });
+        if (this.state.text === '') {
+            this.props.setAlert('Please enter a username', 'light')
+        } else {
+            this.props.searchUsers(this.state.text);
+            this.setState({ text: '' });
+        };
     }
 
     render() {
