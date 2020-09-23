@@ -14,9 +14,10 @@ class App extends Component {
   state = {
     users: [],
     specificUser: {},
+    repos: [],
     loading: false,
     searched: false,
-    alert: null
+    alert: null,
   }
 
   //When component is mounting (data is being fetched) we change "loading" to
@@ -47,6 +48,15 @@ class App extends Component {
     this.setState({ specificUser: res.data, loading: false});
   }
 
+  //Get user repos
+  getUserRepos = async (username) => {
+    this.setState({ loading: true });
+
+    const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+
+    this.setState({ repos: res.data, loading: false});
+  }
+
   //Takes you back to default
   clearUsers = () => this.componentDidMount();
 
@@ -58,7 +68,7 @@ class App extends Component {
 
   render() {
     
-    const {searched, loading, users, alert, specificUser} = this.state;
+    const {searched, loading, users, alert, specificUser, repos} = this.state;
   
     return (
       <Router>
@@ -82,7 +92,14 @@ class App extends Component {
               <Route exact path='/about' component={About} />
 
               <Route exact path="/user/:login" render={props => (
-                <SpecificUser { ...props} getUser={this.getUser} specificUser={specificUser} loading={loading} />
+                <SpecificUser 
+                  { ...props} 
+                  getUser={this.getUser} 
+                  getUserRepos={this.getUserRepos}
+                  specificUser={specificUser} 
+                  repos={repos}
+                  loading={loading} 
+                  />
               )} />
             </Switch>
 
