@@ -1,25 +1,21 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useContext } from 'react'
 import Spinner from '../layout/Spinner'
 import Repos from '../repos/Repos'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import GithubContext from '../../context/github/githubContext'
 
 
-const SpecificUser = ({ specificUser, loading, getUser, getUserRepos, repos, match }) => {
+const SpecificUser = ({ match }) => {
+
+    const githubContext = useContext(GithubContext)
+
+    const { getUser, loading, specificUser, repos, getUserRepos } = githubContext
+
     useEffect(() => {
         getUser(match.params.login);
         getUserRepos(match.params.login);
         //eslint-disable-next-line
     }, []);
-
-    //If we don't use "[]" at the end of useEffect it will fall into a 
-    //loop and never load, therefore we need to add //eslint-disable-next-line
-    //in order to avoid the console error from using "[]"
-
-    // componentDidMount() {
-    //     getUser(match.params.login);
-    //     getUserRepos(match.params.login);
-    // };
 
     const { name, avatar_url, location, bio, blog, login, html_url, company, followers, following, public_repos, public_gists, hireable} = specificUser;
 
@@ -79,12 +75,5 @@ const SpecificUser = ({ specificUser, loading, getUser, getUserRepos, repos, mat
     );
 }
 
-SpecificUser.propType = {
-    loading: PropTypes.bool,
-    user: PropTypes.object.isRequired,
-    repos: PropTypes.array.isRequired,
-    getUser: PropTypes.func.isRequired,
-    getUserRepos: PropTypes.func.isRequired,
-};
 
 export default SpecificUser
